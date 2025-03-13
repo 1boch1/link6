@@ -8,12 +8,10 @@
 	onMount(() => {
 		const unsubscribe = userStore.subscribe((currentUser) => {
 			console.log(currentUser);
-			if (!currentUser.emailVerified) {
+			if (!currentUser || !currentUser.emailVerified) {
 				auth.signOut();
 				goto('/login');
 			}
-			// Se non c'è un utente autenticato, reindirizza a /login
-			if (!currentUser) goto('/login');
 		});
 		// Pulizia: restituisce la funzione di unsubscribe quando il componente viene distrutto.
 		return () => unsubscribe();

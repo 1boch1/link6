@@ -12,8 +12,7 @@
 	// Funge da middleware
 	onMount(() => {
 		const unsubscribe = userStore.subscribe((currentUser) => {
-			// Se non c'è un utente autenticato, reindirizza a /login
-			if (currentUser) goto('/auth/home');
+			if (currentUser && currentUser.emailVerified) goto('/auth/home');
 		});
 		// Pulizia: restituisce la funzione di unsubscribe quando il componente viene distrutto.
 		return () => unsubscribe();
