@@ -1,27 +1,9 @@
 <script>
 	import { ArrowUpFromLine, ArrowDownToLine, UserRoundPlus } from 'lucide-svelte';
 
-	/**
-	 * The stroke width for the icons.
-	 * @type {number}
-	 */
 	const iconStroke = 1.8;
-
-	/**
-	 * The size of the icons.
-	 * @type {number}
-	 */
 	const iconSize = 22;
-
-	/**
-	 * @type {string}
-	 */
 	const textSize = '0.8rem';
-
-	/**
-	 * Array of button configurations.
-	 * @type {Array<{ icon: string, label: string }>}
-	 */
 	const buttons = [
 		{ icon: 'down', label: 'Richiedi' },
 		{ icon: 'up', label: 'Aiuta' },

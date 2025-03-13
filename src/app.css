@@ -1,5 +1,10 @@
 @import 'tailwindcss';
+@import '@skeletonlabs/skeleton';
+@import '@skeletonlabs/skeleton/optional/presets';
+@import '@skeletonlabs/skeleton/themes/wintry';
 @import '@fontsource/fira-mono';
+
+@source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
 @plugin '@tailwindcss/forms';
 
 :root {
@@ -11,13 +16,11 @@
 	--column-margin-top: 4rem;
 
 	color: var(--color-text);
-	font-family: "Poppins", sans-serif;
-	font-weight: 0;
-	font-style: normal;
 }
 
 body {
-	min-height: 100vh;
+	overflow: hidden;
+	height: 100%;
 	margin: 0;
 	background-attachment: fixed;
 	background-color: var(--color-bg);

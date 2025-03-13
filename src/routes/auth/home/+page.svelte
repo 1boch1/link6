@@ -1,7 +1,7 @@
 <script>
 	import TopBar from '$lib/components/TopBar.svelte';
 	import MainActions from '$lib/components/MainActions.svelte';
-	import { AchievementsBar } from 'svelte-achievements-bar';
+	import { AchievementsBar } from 'svelte-achievements-bar'; // pacchetto npm sviluppato da me
 
 	const achievements = [
 		{
