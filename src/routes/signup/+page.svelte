@@ -80,7 +80,7 @@
 
 <section class="flex min-h-screen items-center justify-center bg-gray-50 p-6">
 	<div class="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
-		<p class="logo text-primary-500 text-center">LINK6</p>
+		<p class="logo text-center text-[#3B81F6]">LINK6</p>
 		<h1 class="mb-4 text-center text-2xl font-bold text-gray-900">Crea un account</h1>
 
 		{#if errorMessage}
@@ -130,14 +130,14 @@
 
 			<button
 				type="submit"
-				class="mt-4 w-full rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+				class="mt-4 w-full rounded-lg bg-[#3B81F6] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
 			>
 				Registrati
 			</button>
 
 			<p class="mt-4 text-center text-sm text-gray-600">
 				Hai già un account?
-				<a href="/login" class="text-blue-600 hover:underline">Accedi</a>
+				<a href="/login" class="text-[#3B81F6] hover:underline">Accedi</a>
 			</p>
 		</form>
 	</div>

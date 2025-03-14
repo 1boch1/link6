@@ -1,5 +1,5 @@
 <script>
-	import { ArrowUpFromLine, ArrowDownToLine, UserRoundPlus } from 'lucide-svelte';
+	import { ArrowUpFromLine, ArrowDownToLine, UsersRound } from 'lucide-svelte';
 
 	const iconStroke = 1.8;
 	const iconSize = 22;
@@ -7,20 +7,20 @@
 	const buttons = [
 		{ icon: 'down', label: 'Richiedi' },
 		{ icon: 'up', label: 'Aiuta' },
-		{ icon: 'addfriend', label: 'Aggiungi' }
+		{ icon: 'friends', label: 'Amici' }
 	];
 </script>
 
 <div class="mx-auto flex h-[5rem] w-[100%] space-x-4 font-medium">
 	{#each buttons as button, index}
-		<button type="button" class="btn variant-ringed-primary w-[100%] rounded-2xl text-sm">
+		<button type="button" class="btn w-[100%] rounded-2xl bg-[rgb(250,250,250)] text-sm shadow-sm">
 			<div class="flex flex-col items-center space-y-1">
 				{#if button.icon === 'down'}
 					<ArrowDownToLine size={iconSize} strokeWidth={iconStroke}></ArrowDownToLine>
 				{:else if button.icon === 'up'}
 					<ArrowUpFromLine size={iconSize} strokeWidth={iconStroke}></ArrowUpFromLine>
-				{:else if button.icon === 'addfriend'}
-					<UserRoundPlus size={iconSize} strokeWidth={iconStroke}></UserRoundPlus>
+				{:else if button.icon === 'friends'}
+					<UsersRound size={iconSize} strokeWidth={iconStroke}></UsersRound>
 				{/if}
 				<h1 style="font-size: {textSize}" class="font-normal">{button.label}</h1>
 			</div>

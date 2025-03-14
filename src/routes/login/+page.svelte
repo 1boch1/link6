@@ -1,24 +1,18 @@
 <script>
-	import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+	import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 	import { auth } from '$lib/firebase';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { onAuthStateChanged } from 'firebase/auth';
 
 	let email = 'bochicchiomirco@gmail.com';
 	let password = '12345678';
 	let errorMessage = '';
-
-	// Questo codice permette di avere globalmente e in ogni momento l'utente loggato
-	// e aggiornato accessibile attraverso userStore
 
 	// La funzione onMount viene eseguita quando il componente viene montato.
 	onMount(() => {
 		// Si imposta un listener per monitorare le variazioni di stato dell'autenticazione.
 		// Ogni volta che lo stato cambia (login, logout, etc.), la callback viene eseguita.
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			// Aggiorna lo store `user` con il valore dell'utente attuale.
-			// Se l'utente non è loggato, currentUser sarà null.
 			if (currentUser && currentUser.emailVerified) goto('/auth/home');
 		});
 
@@ -51,11 +45,9 @@
 			const userCredential = await signInWithEmailAndPassword(auth, email, password);
 			const user = userCredential.user;
 
-			if (!user.emailVerified) {
+			if (user && !user.emailVerified) {
 				await auth.signOut(); // Blocca l'accesso
-				errorMessage = 'Indirizzo email non verificato';
-			} else {
-				goto('/auth/home'); // Accesso consentito
+				errorMessage = 'Indirizzo email non verificato.';
 			}
 		} catch (error) {
 			errorMessage = mapFirebaseError(error.code);
@@ -65,7 +57,7 @@
 
 <section class="flex min-h-screen items-center justify-center bg-gray-50 p-6">
 	<div class="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
-		<p class="logo text-primary-500 text-center">LINK6</p>
+		<p class="logo text-center text-[#3B81F6]">LINK6</p>
 		<h1 class="mb-4 text-center text-2xl font-bold text-gray-900">Accedi al tuo account</h1>
 
 		{#if errorMessage}
@@ -98,14 +90,14 @@
 
 			<button
 				type="submit"
-				class="mt-4 w-full rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
+				class="mt-4 w-full rounded-lg bg-[#3B81F6] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
 			>
 				Accedi
 			</button>
 
 			<p class="mt-4 text-center text-sm text-gray-600">
 				Non hai un account?
-				<a href="/signup" class="text-blue-600 hover:underline">Registrati</a>
+				<a href="/signup" class="text-[#3B81F6] hover:underline">Registrati</a>
 			</p>
 		</form>
 	</div>

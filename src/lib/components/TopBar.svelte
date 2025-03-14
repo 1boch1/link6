@@ -1,5 +1,6 @@
 <script>
-	import { MessagesSquare, UserRoundCog } from 'lucide-svelte';
+	import { MessagesSquare, Settings } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
 
 	export let new_messages = true;
 	export const iconsSize = 25;
@@ -8,16 +9,19 @@
 </script>
 
 <div class="topBar">
-	<UserRoundCog size={iconsSize} strokeWidth={iconsStroke} />
+	<button on:click={() => goto('/auth/settings')}>
+		<Settings size={iconsSize} strokeWidth={iconsStroke} />
+	</button>
 
 	<p class="logo" style="font-size: {logoSize}">LINK6</p>
 
 	{#if new_messages}
 		<!-- versione con alert badge -->
+
 		<div class="relative inline-block">
-			<span
-				class="badge-icon preset-filled-error-500 absolute -top-3 -right-2 z-10 h-[0.04rem] w-[0.04rem]"
-			></span>
+			<div
+				class="absolute -end-2 -top-2 inline-flex h-2 w-2 items-center justify-center rounded-full bg-red-600 text-xs font-bold"
+			></div>
 			<MessagesSquare size={iconsSize} strokeWidth={iconsStroke} />
 		</div>
 	{:else}

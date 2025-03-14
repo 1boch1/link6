@@ -1,6 +1,7 @@
 <script>
 	import TopBar from '$lib/components/TopBar.svelte';
 	import MainActions from '$lib/components/MainActions.svelte';
+	import Richiesta from '$lib/components/Richiesta.svelte';
 	import { AchievementsBar } from 'svelte-achievements-bar'; // pacchetto npm sviluppato da me
 
 	const achievements = [
@@ -31,6 +32,15 @@
 	const bgColor = '#e7ecef';
 	const barHeight = '0.7rem';
 	const textSize = '0.7rem';
+
+	let richieste = [
+		{
+			nome: 'Mario',
+			testo: 'Aiuto il cane mi ha cacato nel puzzo ho bisogno di uno spazzino'
+		},
+		{ nome: 'Ciccio', testo: 'Mi dispiace ma interromperò il progetto panini' },
+		{ nome: 'Dario', testo: 'NOOOOOOOOOOOOOOOOOOOOOO' }
+	];
 </script>
 
 <div class="mx-auto mt-[0.7rem] w-[87%]">
@@ -51,7 +61,12 @@
 	<div class="mt-16">
 		<MainActions></MainActions>
 	</div>
-	<div class="mt-7">
+	<div class="mt-7 mb-3">
 		<h1 class="text-[1.4rem] font-semibold">Richieste recenti</h1>
 	</div>
+
+	{#each richieste.slice(0, 3) as richiesta, index}
+		<Richiesta nome={richiesta.nome} testo={richiesta.testo} />
+		<div class="h-3"></div>
+	{/each}
 </div>

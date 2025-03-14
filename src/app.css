@@ -1,12 +1,6 @@
 @import 'tailwindcss';
 @import '@fontsource/fira-mono';
 
-@import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton/optional/presets';
-@import '@skeletonlabs/skeleton/themes/wintry';
-@import '@skeletonlabs/skeleton/themes/cerberus';
-
-@source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
 @plugin '@tailwindcss/forms';
 
 :root {
@@ -19,6 +13,11 @@
 
 	background-color: var(--color-bg);
 	color: var(--color-text);
+
+	font-family: "Poppins", sans-serif;
+	font-weight: 0;
+	font-style: normal;
+
 }
 
 body {
