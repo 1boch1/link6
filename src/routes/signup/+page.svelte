@@ -72,11 +72,6 @@
 			// Mostra messaggio di successo
 			successMessage =
 				"Email di verifica inviata. Controlla la tua inbox per confermare l'account.";
-
-			// Reindirizza alla home dopo la registrazione
-			setTimeout(() => {
-				goto('/auth/home');
-			}, 2000);
 		} catch (error) {
 			errorMessage = mapFirebaseError(error.code);
 		}

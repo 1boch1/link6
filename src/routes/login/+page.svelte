@@ -2,19 +2,28 @@
 	import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 	import { auth } from '$lib/firebase';
 	import { onMount } from 'svelte';
-	import { userStore } from '$lib/stores';
 	import { goto } from '$app/navigation';
+	import { onAuthStateChanged } from 'firebase/auth';
 
 	let email = 'bochicchiomirco@gmail.com';
 	let password = '12345678';
 	let errorMessage = '';
 
-	// Funge da middleware
+	// Questo codice permette di avere globalmente e in ogni momento l'utente loggato
+	// e aggiornato accessibile attraverso userStore
+
+	// La funzione onMount viene eseguita quando il componente viene montato.
 	onMount(() => {
-		const unsubscribe = userStore.subscribe((currentUser) => {
+		// Si imposta un listener per monitorare le variazioni di stato dell'autenticazione.
+		// Ogni volta che lo stato cambia (login, logout, etc.), la callback viene eseguita.
+		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+			// Aggiorna lo store `user` con il valore dell'utente attuale.
+			// Se l'utente non è loggato, currentUser sarà null.
 			if (currentUser && currentUser.emailVerified) goto('/auth/home');
 		});
-		// Pulizia: restituisce la funzione di unsubscribe quando il componente viene distrutto.
+
+		// La funzione restituita da onMount verrà eseguita quando il componente verrà distrutto,
+		// per rimuovere il listener e prevenire memory leaks.
 		return () => unsubscribe();
 	});
 
