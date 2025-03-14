@@ -1,7 +1,14 @@
 <script>
-	import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+	import {
+		getAuth,
+		createUserWithEmailAndPassword,
+		sendEmailVerification,
+		deleteUser
+	} from 'firebase/auth';
 	import { auth } from '$lib/firebase';
 	import { goto } from '$app/navigation';
+	import { doc, setDoc } from 'firebase/firestore';
+	import { db } from '$lib/firebase';
 
 	let email = '';
 	let confirmEmail = '';
@@ -66,12 +73,26 @@
 			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 			const user = userCredential.user;
 
-			// Invia l'email di verifica
-			await sendEmailVerification(user);
+			// Creazione della tabella di firestore
+			try {
+				await setDoc(doc(db, 'users', user.uid), {
+					email: user.email,
+					punteggio: 0,
+					friends: [],
+					requests: []
+				});
 
-			// Mostra messaggio di successo
-			successMessage =
-				"Email di verifica inviata. Controlla la tua inbox per confermare l'account.";
+				// Invia l'email di verifica
+				await sendEmailVerification(user);
+
+				// Mostra messaggio di successo
+				successMessage =
+					"Email di verifica inviata. Controlla la tua inbox per confermare l'account.";
+			} catch (error) {
+				// Se c'è stato un errore elimina l'account
+				await deleteUser(user);
+				console.error('Errore nella creazione del profilo:', error);
+			}
 		} catch (error) {
 			errorMessage = mapFirebaseError(error.code);
 		}
