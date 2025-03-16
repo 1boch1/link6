@@ -1,7 +1,0 @@
-{
-    "name": "Link6",
-    "short_name": "Link6",
-    "description": "Chiedi aiuto ai tuoi amici",
-    "start_url": "/",
-    "display": "standalone"
-}

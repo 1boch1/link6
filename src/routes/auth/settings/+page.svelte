@@ -11,7 +11,6 @@
 		if (!('Notification' in window)) console.log('Non possiedi questa funzione');
 
 		Notification.requestPermission().then((permission) => {
-			mess = permission;
 			if (permission === 'granted') {
 				console.log('Permesso notifiche concesso!');
 			}
