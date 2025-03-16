@@ -50,7 +50,7 @@ export async function getRequests(currentUser, friends)
         let receivedRequests = receivedSnapshots.flatMap(snapshot => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
 
         // Query per le richieste inviate
-        const sentQuery = query(collection(db, 'requests'), where('createdBy', '==', currentUser.email));
+        const sentQuery = query(collection(db, 'requests'), orderBy('timestamp', "desc"), where('createdBy', '==', currentUser.email));
         const sentSnap = await getDocs(sentQuery);
         const sentRequests = sentSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
