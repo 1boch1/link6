@@ -6,8 +6,8 @@
 	const iconSize = 22;
 	const textSize = '0.8rem';
 	const buttons = [
-		{ icon: 'down', label: 'Richiedi', route: '/auth/richieste' },
-		{ icon: 'up', label: 'Aiuta' },
+		{ icon: 'down', label: 'Richiedi', route: '/auth/richiedi' },
+		{ icon: 'up', label: 'Aiuta', route: '/auth/aiuta' },
 		{ icon: 'friends', label: 'Amici', route: '/auth/amici' }
 	];
 </script>

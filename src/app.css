@@ -5,11 +5,7 @@
 
 :root {
 	--color-bg: hsl(223, 28%, 95%);
-	--color-theme-1: #ff3e00;
-	--color-theme-2: #4075a6;
 	--color-text: rgba(0, 0, 0, 0.9);
-	--column-width: 42rem;
-	--column-margin-top: 4rem;
 
 	background-color: var(--color-bg);
 	color: var(--color-text);
@@ -21,7 +17,6 @@
 }
 
 body {
-	overflow: hidden;
 	height: 100%;
 	margin: 0;
 	background-attachment: fixed;

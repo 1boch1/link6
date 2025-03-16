@@ -1,11 +1,21 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase';
-
-	import { ArrowLeft, LogOut } from 'lucide-svelte';
+	import { ArrowLeft, LogOut, Bell } from 'lucide-svelte';
 
 	function logout() {
 		auth.signOut();
+	}
+
+	function askForNotificationPermission() {
+		if (!('Notification' in window)) console.log('Non possiedi questa funzione');
+
+		Notification.requestPermission().then((permission) => {
+			mess = permission;
+			if (permission === 'granted') {
+				console.log('Permesso notifiche concesso!');
+			}
+		});
 	}
 </script>
 
@@ -18,10 +28,41 @@
 		<ArrowLeft size={30} class="text-gray-800" />
 	</button>
 
-	<div class="flex w-full items-center justify-between border-b border-gray-300 p-4">
-		<button on:click={logout} class="flex items-center space-x-2">
+	<div class="elemento">
+		<button on:click={askForNotificationPermission}>
+			<Bell size={26} class="text-gray-800" />
+			<span>Abilita notifiche</span>
+		</button>
+	</div>
+
+	<div class="elemento">
+		<button on:click={logout}>
 			<LogOut size={26} class="text-gray-800" />
-			<span class="pl-4 text-lg font-semibold text-gray-900">Logout</span>
+			<span>Logout</span>
 		</button>
 	</div>
 </div>
+
+<style>
+	.elemento {
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1px solid #d1d5db;
+		padding: 1rem;
+	}
+
+	.elemento > button {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.elemento span {
+		padding-left: 1rem;
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: #1a202c;
+	}
+</style>

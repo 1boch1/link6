@@ -2,7 +2,7 @@
 	import { MessagesSquare, Settings } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 
-	export let new_messages = true;
+	export let new_messages = false;
 	export const iconsSize = 25;
 	export const logoSize = '1.65rem';
 	export const iconsStroke = 1.75;
@@ -15,18 +15,20 @@
 
 	<p class="logo" style="font-size: {logoSize}">LINK6</p>
 
-	{#if new_messages}
-		<!-- versione con alert badge -->
+	<button on:click={() => goto('/auth/listaChats')}>
+		{#if new_messages}
+			<!-- versione con alert badge -->
 
-		<div class="relative inline-block">
-			<div
-				class="absolute -end-2 -top-2 inline-flex h-2 w-2 items-center justify-center rounded-full bg-red-600 text-xs font-bold"
-			></div>
+			<div class="relative inline-block">
+				<div
+					class="absolute -end-2 -top-2 inline-flex h-2 w-2 items-center justify-center rounded-full bg-red-600 text-xs font-bold"
+				></div>
+				<MessagesSquare size={iconsSize} strokeWidth={iconsStroke} />
+			</div>
+		{:else}
 			<MessagesSquare size={iconsSize} strokeWidth={iconsStroke} />
-		</div>
-	{:else}
-		<MessagesSquare size={iconsSize} strokeWidth={iconsStroke} />
-	{/if}
+		{/if}
+	</button>
 </div>
 
 <style>

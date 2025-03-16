@@ -36,3 +36,21 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+
+users: Contiene le informazioni dell'utente.
+uid: ID dell'utente.
+email: Email dell'utente.
+punteggio: Punteggio dell'utente.
+amici: Lista degli amici (array di email).
+requests: Contiene le richieste inviate.
+createdBy: Email di chi ha creato la richiesta.
+status: Stato della richiesta (pending, accepted).
+content: Contenuto della richiesta.
+timestamp: Data di creazione della richiesta.
+chats: Contiene le chat tra gli utenti.
+users: Lista di email degli utenti nella chat.
+messages: Contiene i messaggi nelle chat.
+sender: Email di chi ha inviato il messaggio.
+text: Testo del messaggio.
+timestamp: Data e ora del messaggio.
