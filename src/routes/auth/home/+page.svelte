@@ -2,7 +2,7 @@
 	import TopBar from '$lib/components/TopBar.svelte';
 	import MainActions from '$lib/components/MainActions.svelte';
 	import Richiesta from '$lib/components/Richiesta.svelte';
-	import { AchievementsBar } from 'svelte-achievements-bar'; // pacchetto npm sviluppato da me
+	import AchievementsBar from '$lib/components/AchievementsBar.svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { auth } from '$lib/firebase';
 
@@ -62,15 +62,6 @@
 	const bgColor = '#e7ecef';
 	const barHeight = '0.7rem';
 	const textSize = '0.7rem';
-
-	/*let richieste = [
-		{
-			nome: 'Mario',
-			testo: 'Aiuto '
-		},
-		{ nome: 'Francesco', testo: 'Qualcuno mi puo aiutare' },
-		{ nome: 'Dario', testo: 'Ciao aiuto' }
-	];*/
 </script>
 
 <div class="mx-auto mt-[0.7rem] w-[87%]">

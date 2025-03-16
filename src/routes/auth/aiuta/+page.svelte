@@ -1,6 +1,5 @@
 <script>
 	import Richiesta from '$lib/components/Richiesta.svelte';
-	import { AchievementsBar } from 'svelte-achievements-bar'; // pacchetto npm sviluppato da me
 	import { onAuthStateChanged } from 'firebase/auth';
 	import { auth, db } from '$lib/firebase';
 	import { ArrowLeft } from 'lucide-svelte';
