@@ -62,14 +62,11 @@
 
 <div class="m-auto w-[90%]">
 	<!-- torna indietro -->
-	<button
-		on:click={() => goto('/auth/home')}
-		class="mb-2 flex w-full items-center justify-between p-1"
-	>
+	<button on:click={() => goto('/auth/home')} class="fixed top-0 px-1 py-2">
 		<ArrowLeft size={30} class="text-gray-800" />
 	</button>
 	<div class="container">
-		<div class="listaMessaggi">
+		<div class="listaMessaggi pt-14">
 			{#each messages as message (message.id)}
 				<div class="messaggio {message.sender === auth.currentUser?.email ? 'stile1' : 'stile2'}">
 					<p>
@@ -79,11 +76,11 @@
 				</div>
 			{/each}
 		</div>
+	</div>
 
-		<div class="input-container">
-			<input type="text" bind:value={newMessage} placeholder="Scrivi..." />
-			<button on:click={sendMessage}>Invia</button>
-		</div>
+	<div class="input-container fixed bottom-0 left-0">
+		<input type="text" bind:value={newMessage} placeholder="Scrivi..." />
+		<button on:click={sendMessage}>Invia</button>
 	</div>
 </div>
 
@@ -95,9 +92,7 @@
 	}
 
 	.listaMessaggi {
-		overflow-y: auto;
-		padding: 10px;
-		margin-bottom: 10px;
+		padding-bottom: 11vh;
 		display: flex;
 		flex-direction: column;
 	}
@@ -121,9 +116,14 @@
 	}
 
 	.input-container {
+		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		background-color: #fff;
+		padding: 10px;
+		box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+		z-index: 10;
 	}
 
 	.input-container input {
