@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeFirestore, CACHE_SIZE_UNLIMITED, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -16,5 +16,12 @@ const firebaseApp = getApps().length === 0
     ? initializeApp(firebaseConfig)
     : getApps()[0];
 
-export const auth = getAuth(firebaseApp);
-export const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp);
+const db = initializeFirestore(firebaseApp,
+    {
+        localCache:
+            persistentLocalCache({ tabManager: persistentMultipleTabManager(), cacheSizeBytes: CACHE_SIZE_UNLIMITED, persistence: true })
+    });
+
+export { auth, db };
+
