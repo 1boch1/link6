@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import { getRequests, get_Punteggio_e_Amici } from '$lib/actions';
 	import Richiesta from '$lib/components/Richiesta.svelte';
+	import { cache } from '$lib/store.js';
 
 	let testoPost = '';
 	let errorMessage = '';
@@ -59,6 +60,11 @@
 			});
 
 			successMessage = 'Richiesta inviata con successo';
+
+			// Invalido la cache
+			cache.update((state) => {
+				return { ...state, lastUpdated: 0 };
+			});
 
 			let resR = await getRequests(currentUser, amici);
 

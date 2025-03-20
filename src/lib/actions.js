@@ -1,6 +1,21 @@
 import { db } from '$lib/firebase';
+import { cache } from '$lib/store.js';
 import { collection, doc, getDoc, getDocs, setDoc, updateDoc, query, where, onSnapshot, orderBy } from 'firebase/firestore';
 import { ArrowLeft } from 'lucide-svelte';
+import { get } from 'svelte/store'
+
+function cacheScaduta()
+{
+    let res = false;
+
+    cache.update(state =>
+    {
+        if (Date.now() > state.lastUpdated + 60000) res = true;
+        return state;
+    });
+
+    return res;
+}
 
 // Funzione che ritorna il punteggio e amici dell'utente passato
 export async function get_Punteggio_e_Amici(currentUser)
@@ -8,6 +23,15 @@ export async function get_Punteggio_e_Amici(currentUser)
     try
     {
         if (!currentUser) return null;
+
+        if (!cacheScaduta())
+        {
+            console.log("USO CACHE");
+
+            return {
+                amici: get(cache).amici || [], punteggio: get(cache).punteggio || 0
+            };
+        }
 
         const userRef = doc(db, 'users', currentUser.uid);
         const userSnap = await getDoc(userRef);
@@ -17,6 +41,12 @@ export async function get_Punteggio_e_Amici(currentUser)
         const userData = userSnap.data();
         console.log("Ho fatto il fetch di questi dati: ");
         console.log(userData);
+
+        cache.update(state =>
+        {
+            const now = Date.now();
+            return { ...state, amici: userData.amici, punteggio: userData.punteggio };
+        });
 
         return {
             punteggio: userData.punteggio || 0, amici: userData.amici || []
@@ -34,6 +64,15 @@ export async function getRequests(currentUser, friends)
     {
         if (!currentUser) return null;
         if (!friends || friends.length <= 0) return null;
+
+        if (!cacheScaduta())
+        {
+            console.log("USO CACHE");
+
+            return {
+                requestsReceived: get(cache).receivedRequests || [], requestsSent: get(cache).sentRequests || []
+            };
+        }
 
         // Devo dividere l'array perchè "in" di firestore lavora con massimo 10 elementi
         const friendChunks = chunkArray(friends, 10);
@@ -57,6 +96,12 @@ export async function getRequests(currentUser, friends)
         console.log("Fetch delle richieste sent/received: ");
         console.log(receivedRequests);
         console.log(sentRequests);
+
+        cache.update(state =>
+        {
+            const now = Date.now();
+            return { ...state, receivedRequests: receivedRequests, sentRequests: sentRequests, lastUpdated: now };
+        });
 
         return {
             requestsReceived: receivedRequests,

@@ -15,6 +15,7 @@
 	import { goto } from '$app/navigation';
 	import { ArrowLeft } from 'lucide-svelte';
 	import { get_Punteggio_e_Amici } from '$lib/actions';
+	import { cache } from '$lib/store.js';
 
 	let amici = [];
 	let friendEmail = '';
@@ -70,6 +71,11 @@
 			});
 
 			successMessage = 'Amico aggiunto';
+
+			// Invalido la cache
+			cache.update((state) => {
+				return { ...state, lastUpdated: 0 };
+			});
 
 			// Ricarica la lista amici
 			let resPA = await get_Punteggio_e_Amici(currentUser);

@@ -18,6 +18,7 @@
 	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
 	import { getRequests, get_Punteggio_e_Amici } from '$lib/actions';
+	import { cache } from '$lib/store.js';
 
 	let richieste = [];
 
@@ -96,6 +97,11 @@
 
 			successMessage = 'Richiesta accettata!';
 			console.log('Chat creata e messaggio inviato!');
+
+			// Invalido la cache
+			cache.update((state) => {
+				return { ...state, lastUpdated: 0 };
+			});
 
 			goto('/auth/chat/' + chatId.toString());
 		} catch (error) {
