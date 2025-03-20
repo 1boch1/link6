@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	let email = 'jqe68537@bcooq.com';
+	let email = 'testsaw08@gmail.com';
 	let password = '12345678';
 	let errorMessage = '';
 

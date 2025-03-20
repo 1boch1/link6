@@ -63,7 +63,6 @@ export async function getRequests(currentUser, friends)
     try
     {
         if (!currentUser) return null;
-        if (!friends || friends.length <= 0) return null;
 
         if (!cacheScaduta())
         {
@@ -74,19 +73,24 @@ export async function getRequests(currentUser, friends)
             };
         }
 
-        // Devo dividere l'array perchè "in" di firestore lavora con massimo 10 elementi
-        const friendChunks = chunkArray(friends, 10);
+        let receivedRequests = [];
 
-        const receivedQueries = friendChunks.map(chunk =>
-            query(collection(db, 'requests'), orderBy('timestamp', "desc"), where('status', '==', 'pending'), where('createdBy', 'in', chunk))
-        );
+        if (friends && friends.length > 0) 
+        {
+            // Devo dividere l'array perchè "in" di firestore lavora con massimo 10 elementi
+            const friendChunks = chunkArray(friends, 10);
 
-        // Esegui tutte le query in parallelo e raccogli i risultati
-        // Promise.all prende un array di Promise e le aspetta tutte
-        const receivedSnapshots = await Promise.all(receivedQueries.map(q => getDocs(q)));
+            const receivedQueries = friendChunks.map(chunk =>
+                query(collection(db, 'requests'), orderBy('timestamp', "desc"), where('status', '==', 'pending'), where('createdBy', 'in', chunk))
+            );
 
-        // La flatMap è una map() + flat(). Faccio questa operazione anche per non perdere il riferimento a id del documento (qua abbiamo un array di snap che sono a loro volta array di docs)
-        let receivedRequests = receivedSnapshots.flatMap(snapshot => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+            // Esegui tutte le query in parallelo e raccogli i risultati
+            // Promise.all prende un array di Promise e le aspetta tutte
+            const receivedSnapshots = await Promise.all(receivedQueries.map(q => getDocs(q)));
+
+            // La flatMap è una map() + flat(). Faccio questa operazione anche per non perdere il riferimento a id del documento (qua abbiamo un array di snap che sono a loro volta array di docs)
+            receivedRequests = receivedSnapshots.flatMap(snapshot => snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
 
         // Query per le richieste inviate
         const sentQuery = query(collection(db, 'requests'), orderBy('timestamp', "desc"), where('createdBy', '==', currentUser.email));

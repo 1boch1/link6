@@ -4,7 +4,8 @@
 	import Richiesta from '$lib/components/Richiesta.svelte';
 	import AchievementsBar from '$lib/components/AchievementsBar.svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
-	import { auth } from '$lib/firebase';
+	import { auth, db } from '$lib/firebase';
+	import { collection, onSnapshot, query } from 'firebase/firestore';
 
 	import { onMount } from 'svelte';
 	import { getRequests, get_Punteggio_e_Amici } from '$lib/actions';
@@ -13,6 +14,8 @@
 	let richieste = [];
 
 	onMount(() => {
+		let unsubscribe2 = () => {};
+
 		const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
 			if (currentUser && currentUser.emailVerified) {
 				try {
@@ -27,13 +30,25 @@
 					if (resR == null) return;
 
 					richieste = resR.requestsReceived;
+
+					const requestRef = collection(db, 'requests');
+					const requestsQuery = query(requestRef);
+
+					unsubscribe2();
+
+					unsubscribe2 = onSnapshot(requestsQuery, async (snapshot) => {
+						richieste = (await getRequests(currentUser, resPA.amici)).requestsReceived;
+					});
 				} catch (error) {
 					console.log(error);
 				}
 			}
 		});
 
-		return () => unsubscribe();
+		return () => {
+			unsubscribe();
+			unsubscribe2();
+		};
 	});
 
 	const achievements = [

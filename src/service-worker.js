@@ -4,6 +4,7 @@ import { build, files, version } from '$service-worker';
 /*
 Ho preso questo Service Worker dalla documentazione
 ufficiale di SvelteKit
+
 https://svelte.dev/docs/kit/service-workers
 */
 

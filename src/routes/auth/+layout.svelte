@@ -15,7 +15,8 @@
 		onSnapshot,
 		serverTimestamp,
 		query,
-		where
+		where,
+		orderBy
 	} from 'firebase/firestore';
 	import { cache } from '$lib/store.js';
 
@@ -34,6 +35,7 @@
 
 	onMount(() => {
 		let unsubscribe2 = () => {};
+		let first = true;
 
 		const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
 			if (!currentUser || !currentUser.emailVerified) {
@@ -42,25 +44,33 @@
 				return;
 			}
 
-			const userRef = doc(db, 'users', currentUser.uid);
-			const userSnap = await getDoc(userRef);
-			const friendsList = userSnap.data().amici;
-
 			const requestRef = collection(db, 'requests');
-			const requestsQuery = query(requestRef, where('createdBy', 'in', friendsList));
-
-			let first = true;
+			const requestsQuery = query(requestRef, orderBy('timestamp', 'desc'));
 
 			unsubscribe2();
 
-			unsubscribe2 = onSnapshot(requestsQuery, (snapshot) => {
+			unsubscribe2 = onSnapshot(requestsQuery, async (snapshot) => {
+				// faccio il controllo con "first" per evitare che parta la prima volta (quando si apre l'app)
+				if (first) {
+					first = false;
+					return;
+				}
+
 				// Invalido la cache
 				cache.update((state) => {
 					return { ...state, lastUpdated: 0 };
 				});
-				// faccio il controllo con "first" per evitare che parta la prima volta (quando si apre l'app)
-				if (!first) mostraNotifica();
-				first = false;
+
+				console.log('Nuova richiesta: ');
+				console.log(snapshot.docs[0].data());
+
+				let creatoreNuovaRichiesta = snapshot.docs[0].data().createdBy || '';
+
+				const userRef = doc(db, 'users', currentUser.uid);
+				const userSnap = await getDoc(userRef);
+				const friendsList = userSnap.data().amici || [];
+
+				if (friendsList.includes(creatoreNuovaRichiesta)) mostraNotifica();
 			});
 		});
 

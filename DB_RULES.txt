@@ -1,38 +1,49 @@
 rules_version = '2';
-
 service cloud.firestore {
-  match /databases/{database}/documents {
+  match / databases / { database } / documents {
 
-    // Regole per la collezione "users"
-    match /users/{userId} {
-      // Permetti a chiunque sia autenticato di leggere tutti gli utenti
+    // Regole per la collection "users"
+    match / users / { userId } {
+      // Lettura: ogni utente autenticato può leggere i dati degli utenti
       allow read: if request.auth != null;
-      // Permetti la scrittura solo al proprietario del documento
-      allow write: if request.auth != null && request.auth.uid == userId;
+
+      // Creazione: l'utente può creare solo il documento del proprio profilo (id uguale a request.auth.uid)
+      allow create: if request.auth != null && request.auth.uid == userId
+        && request.resource.data.email == request.auth.token.email;
+
+      // Modifica: l'utente può aggiornare il proprio profilo
+      allow update: if request.auth != null && request.auth.uid == userId;
     }
 
-    // Regole per la collezione "requests"
-    match /requests/{requestId} {
-      // Un utente può leggere solo le richieste che ha creato o quelle create dai suoi amici
-      allow read: if request.auth != null && (
-        request.auth.token.email == resource.data.createdBy ||
-        isFriend(request.auth.token.email, resource.data.createdBy)
-      );
-      
-      allow create, update: if request.auth != null;
-     
+    // Regole per la collection "requests"
+    match / requests / { requestId } {
+      // Lettura: tutti gli utenti autenticati possono leggere le richieste.
+      allow read: if request.auth != null;
+
+      // Creazione: l'utente può creare una richiesta solo se il campo "createdBy" corrisponde alla sua email
+      allow create: if request.auth != null
+        && request.resource.data.createdBy == request.auth.token.email;
+
+      // Aggiornamento
+      allow update: if request.auth != null
+        && request.auth.token.email != resource.data.createdBy;
     }
 
-    // Regole per la collezione "chats"
-    match /chats/{chatId} {
-      // Solo gli utenti coinvolti nella chat possono leggerla o scriverci
-      allow read, write: if request.auth != null && request.auth.token.email in resource.data.users;
-    }
-    
-    // Funzione per controllare se un utente è amico di un altro
-    function isFriend(userEmail, friendEmail) {
-      return exists(/databases/$(database)/documents/users/$(userEmail)) &&
-             friendEmail in get(/databases/$(database)/documents/users/$(userEmail)).data.amici;
+    // Regole per la collection "chats" e la sotto-collection "messages"
+    match / chats / { chatId } {
+      // Lettura, aggiornamento e cancellazione di una chat:
+      // L'utente può accedere se la sua email è presente nell'array "users" della chat
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email in resource.data.users;
+
+      allow create: if request.auth != null
+
+      // Regole per la sotto-collection "messages" in ogni chat
+      match / messages / { messageId } {
+        // Per leggere i messaggi, l'utente deve far parte della chat 
+        allow read: if request.auth != null
+          && request.auth.token.email in get(/databases/$(database) / documents / chats / $(chatId)).data.users;
+      }
     }
   }
 }

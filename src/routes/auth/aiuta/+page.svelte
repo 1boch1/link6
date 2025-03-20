@@ -80,8 +80,7 @@
 			if (!chatId) {
 				// Se non esiste, crea la chat
 				const newChatRef = await addDoc(chatsRef, {
-					users: [richiesta.createdBy, auth.currentUser.email],
-					createdAt: serverTimestamp()
+					users: [richiesta.createdBy, auth.currentUser.email]
 				});
 
 				chatId = newChatRef.id;

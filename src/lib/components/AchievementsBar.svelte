@@ -1,4 +1,7 @@
 <script>
+	// Per questo componente ho fatto anche un pacchetto npm:
+	// https://www.npmjs.com/package/svelte-achievements-bar
+
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { Sun, HeartHandshake, Handshake, HandHelping } from 'lucide-svelte';
@@ -100,7 +103,7 @@
 	.icon {
 		padding: calc(var(--icon-size) / 2.4);
 		border-radius: 50%;
-		background-color: var(--bg-color); /* Background color for the icon circle */
+		background-color: var(--bg-color);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -108,12 +111,12 @@
 	}
 
 	.icon.lit {
-		background-color: var(--main-color); /* Lit color */
+		background-color: var(--main-color);
 	}
 
 	.text {
 		font-size: var(--text-size);
 		position: absolute;
-		margin-top: calc(var(--icon-size) * 0.8); /* Adjusted position */
+		margin-top: calc(var(--icon-size) * 0.8);
 	}
 </style>
