@@ -53,12 +53,12 @@ Tenere anche presente che per le funzionalità di notifica e service worker biso
 ## Account di test
 
 Email: testsaw08@gmail.com
-Password = 12345678
+Password: 12345678
 
 e
 
 Email: bochicchiomirco@gmail.com
-Password = 12345678
+Password: 12345678
 
 ## DB Firestore
 
