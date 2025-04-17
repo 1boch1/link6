@@ -50,16 +50,6 @@ Tenere anche presente che per le funzionalità di notifica e service worker biso
 - Decidendo di accettare una richiesta verrà creata una chat (se non esiste ancora) e verrà inviato un messaggio di accettazione a chi ha effettuato la richiesta, adesso i 2 utenti posso chattare
 - In settings si possono attivare le notifiche e fare il logout
 
-## Account di test
-
-Email: testsaw08@gmail.com
-Password: 12345678
-
-e
-
-Email: bochicchiomirco@gmail.com
-Password: 12345678
-
 ## DB Firestore
 
 - users (uid): Contiene le informazioni dell'utente.
